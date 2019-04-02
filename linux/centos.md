@@ -1,10 +1,8 @@
-
-
 # Centos
 
 ## 基本设置
 
-```
+```text
 /etc/sysconfig/network
 
 NETWORKING=yes
@@ -46,7 +44,7 @@ setenforce 0
 SELINUX=disabled
 ```
 
-```
+```text
 /etc/hosts
 
 192.168.5.250  webmonster
@@ -58,7 +56,8 @@ webmonster
 shutdown -r now
 ```
 
-```
+```text
 yum install -y wget
 yum groupinstall "GNOME Desktop" "Graphical Administration Tools"
 ```
+
