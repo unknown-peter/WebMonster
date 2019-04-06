@@ -157,9 +157,21 @@ public static void sort(int[] array, int lo, int hi) {
 
 ## java
 
-HashTable、HashMap、ConcurrentHashMap
+HashTable、HashMap、ConcurrentHashMap  
+HashMap实现了Map接口，实现了将唯一键隐射到特定值上。允许一个NULL键和多个NULL值。非线程安全。  
+HashTable类似于HashMap，但是不允许NULL键和NULL值，比HashMap慢，因为它是同步的。HashTable是一个线程安全的类，它使用synchronized来锁住整张Hash表来实现线程安全，即每次锁住整张表让线程独占。  
+ConcurrentHashMap允许多个修改操作并发进行，其关键在于使用了锁分离技术。它使用了多个锁来控制对hash表的不同部分进行的修改。ConcurrentHashMap内部使用段\(Segment\)来表示这些不同的部分，每个段其实就是一个小的Hashtable，它们有自己的锁。只要多个修改操作发生在不同的段上，它们就可以并发进行。  
+在JDK1.7版本中，ConcurrentHashMap的数据结构是由一个Segment数组和多个HashEntry组成，如下图所示：
 
-CountDownLatch
+![](https://images2018.cnblogs.com/blog/981978/201803/981978-20180326222203010-1538132747.png)
+
+Segment数组的意义就是将一个大的table分割成多个小的table来进行加锁，也就是上面的提到的锁分离技术，而每一个Segment元素存储的是HashEntry数组+链表，这个和HashMap的数据存储结构一样  
+JDK1.8的实现已经摒弃了Segment的概念，而是直接用Node数组+链表+红黑树的数据结构来实现，并发控制使用Synchronized和CAS来操作，整个看起来就像是优化过且线程安全的HashMap，虽然在JDK1.8中还能看到Segment的数据结构，但是已经简化了属性，只是为了兼容旧版本。
+
+![](https://images2018.cnblogs.com/blog/981978/201803/981978-20180326222301021-637978199.png)
+
+CountDownLatch、CyclicBarrier  
+CyclicBarrier可重入
 
 synchronized原理：  
 每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：  
@@ -213,11 +225,29 @@ jstat 虚拟机统计信息监视\(新生代、老年代等各区的使用情况
 jmap java内存映像  
 jstack java堆栈跟踪
 
-判断对象是否可以GC
+判断对象是否可以GC  
+根搜索算法，引用计数法（循环引用，js使用）  
+一个对象到GC Roots没有任何引用链相连，则该对象不可用，这时Java虚拟机可以对这些对象进行回收。  
+Java虚拟机将以下对象定义为 GC Roots ：  
+Java虚拟机栈中引用的对象，虚拟机栈中（栈帧） 静态属性引用的对象，static对象 常量引用的对象，final对象 本地方法栈中引用的对象，nio
 
 垃圾收集器
 
-OOM出现场景，如何定位问题
+OOM出现场景，如何定位问题  
+HeapSize OOM  
+堆空间溢出。老年代区域剩余的内存，已经无法满足将要晋升到老年代区域的对象大小，会报此错。一般来说，绝大部分都是这种情况。大量空间占据了堆空间，而这些对象持有强引用，导致无法回收，当对象大小之和大于由xmx参数指定的堆空间大小时，溢出错误就发生了。  
+发生堆内存不足的原因可能有：  
+1）设置的堆内存太小，而系统运行需要的内存要超过这个设置值  
+2）内存泄露。关注系统稳定运行期，full gc每次gc后的可用内存值是否一直在增大。  
+3）由于设计原因导致系统需要过多的内存，如系统中过多地缓存了数据库中的数据，这属于设计问题，需要通过设计减少内存的使用。  
+4）分析线程执行模型和它们持有的JVM里的短生命对象  
+解决这种问题两种方法：  
+1）增加参数，- XX:-UseGCOverheadLimit，关闭这个特性，同时增加heap大小，-Xmx1024m。  
+2）排查并优化消耗内存资源代码。  
+PermGen OOM  
+永久代\(PermGen space\)是JVM实现方法区的地方，因此该异常主要设计到方法区和方法区中的常量池。永久代存放的东西有class和一些常量。perm是放永久区的。如果一个系统定义了太多的类型，那永久区可能会溢出。jdk1.8中，被称为元数据区。
+
+
 
 线上服务CPU很高，如何找到问题
 
