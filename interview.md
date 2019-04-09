@@ -1,4 +1,4 @@
-# interview
+# unknown
 
 ## 代码
 
@@ -214,7 +214,15 @@ DispatcherServlet响应用户。
 
 ## jvm虚拟机
 
-运行时数据区：方法区\(类定义、常量、静态变量\)、虚拟机栈、本地方法栈、堆、程序计数器
+运行时数据区：方法区\(类定义、常量、静态变量\)、虚拟机栈、本地方法栈、堆、程序计数器  
+
+
+![img](https://img.alicdn.com/tfs/TB1bhRnRFXXXXa2XVXXXXXXXXXX-510-401.png)
+
+堆内存划分为： Eden、Survivor 和 Tenured/Old 空间  
+
+
+![img](https://img.alicdn.com/tfs/TB1EVhqRFXXXXcFXFXXXXXXXXXX-583-183.png)
 
 双亲委派模型：一个类加载器收到了类加载请求，首先请求委派给父类加载器完成，只有父加载器不能加载时，子加载器才会尝试加载  
 类加载器分类：启动类加载器\(bootstrap classloader lib\)、扩展类加载器\(extension classloader lib/ext\)、应用程序类加载器\(application classloader\)
@@ -231,7 +239,10 @@ jstack java堆栈跟踪
 Java虚拟机将以下对象定义为 GC Roots ：  
 Java虚拟机栈中引用的对象，虚拟机栈中（栈帧） 静态属性引用的对象，static对象 常量引用的对象，final对象 本地方法栈中引用的对象，nio
 
-垃圾收集器
+垃圾收集器  
+
+
+![img](https://img.alicdn.com/tfs/TB1z9BsRFXXXXXzXVXXXXXXXXXX-865-704.png)
 
 OOM出现场景，如何定位问题  
 HeapSize OOM  
@@ -247,11 +258,16 @@ HeapSize OOM
 PermGen OOM  
 永久代\(PermGen space\)是JVM实现方法区的地方，因此该异常主要设计到方法区和方法区中的常量池。永久代存放的东西有class和一些常量。perm是放永久区的。如果一个系统定义了太多的类型，那永久区可能会溢出。jdk1.8中，被称为元数据区。
 
+线上服务CPU很高，如何找到问题  
+1、top命令：Linux命令。可以查看实时的CPU使用情况。也可以查看最近一段时间的CPU使用情况。  
+2、PS命令：Linux命令。强大的进程状态监控命令。可以查看进程以及进程中线程的当前CPU使用情况。属于当前状态的采样数据。  
+3、jstack：Java提供的命令。可以查看某个进程的当前线程栈运行情况。根据这个命令的输出可以定位某个进程的所有线程的当前运行状态、运行代码，以及是否死锁等等。  
+**4、pstack：Linux命令。可以查看某个进程的当前线程栈运行情况。**
 
-
-线上服务CPU很高，如何找到问题
-
-线上应用频繁Full GC，如何找到问题
+线上应用频繁Full GC，如何找到问题  
+1、查看GC情况jstat -gcutil 1 1000 \#1是进程号  
+2、jmap -F -dump:format=b,file=heapDump 1 \#1是进程号  
+3、jhat、VisualVM分析
 
 ## redis
 
