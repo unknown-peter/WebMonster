@@ -1,6 +1,6 @@
 # unknown
 
-## 代码
+### 代码
 
 单例模式
 
@@ -155,7 +155,7 @@ public static void sort(int[] array, int lo, int hi) {
     }
 ```
 
-## java
+### java
 
 HashTable、HashMap、ConcurrentHashMap  
 HashMap实现了Map接口，实现了将唯一键隐射到特定值上。允许一个NULL键和多个NULL值。非线程安全。  
@@ -187,7 +187,7 @@ synchronized与Lock的区别
 5.synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）  
 6.Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题。
 
-## Spring
+### Spring
 
 bean生命周期：  
 IoC容器找到bean定义并实例化bean  
@@ -212,15 +212,13 @@ ViewResolver解析后返回具体View
 DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）  
 DispatcherServlet响应用户。
 
-## jvm虚拟机
+### jvm虚拟机
 
-运行时数据区：方法区\(类定义、常量、静态变量\)、虚拟机栈、本地方法栈、堆、程序计数器  
-
+运行时数据区：方法区\(类定义、常量、静态变量\)、虚拟机栈、本地方法栈、堆、程序计数器
 
 ![img](https://img.alicdn.com/tfs/TB1bhRnRFXXXXa2XVXXXXXXXXXX-510-401.png)
 
-堆内存划分为： Eden、Survivor 和 Tenured/Old 空间  
-
+堆内存划分为： Eden、Survivor 和 Tenured/Old 空间
 
 ![img](https://img.alicdn.com/tfs/TB1EVhqRFXXXXcFXFXXXXXXXXXX-583-183.png)
 
@@ -239,8 +237,7 @@ jstack java堆栈跟踪
 Java虚拟机将以下对象定义为 GC Roots ：  
 Java虚拟机栈中引用的对象，虚拟机栈中（栈帧） 静态属性引用的对象，static对象 常量引用的对象，final对象 本地方法栈中引用的对象，nio
 
-垃圾收集器  
-
+垃圾收集器
 
 ![img](https://img.alicdn.com/tfs/TB1z9BsRFXXXXXzXVXXXXXXXXXX-865-704.png)
 
@@ -269,19 +266,19 @@ PermGen OOM
 2、jmap -F -dump:format=b,file=heapDump 1 \#1是进程号  
 3、jhat、VisualVM分析
 
-## redis
+### redis
 
 redis数据类型：String、list、hash、set、zset  
 redis持久化： RDB\(快照\)、AOF\(保存为AOF文件，append\)  
 主从复制 slave of
 
-## MyBatis
+### MyBatis
 
 MyBatis中使用\#和$占位符的区别：\#将传入的数据都当成一个字符串，会对传入的数据自动加上引号；$将传入的数据直接显示生成在SQL中\(有可能导致SQL注入攻击\)
 
 动态SQL：复杂查询指定多个查询条件 if、choose/when/otherwise、trim、where、set、foreach
 
-## mysql
+### mysql
 
 数据库特征：A\(原子性\)、C\(一致性\)、I\(隔离性\)、D\(持久性\)  
 数据库隔离级别：串行化、可重复读\(幻读\)、读已提交、读未提交\(脏读\)
@@ -298,10 +295,10 @@ show status like 'slow\_queries' safe-mode --slow-query-log记录慢查询日志
 explain分析sql语句执行  
 show status like 'Handler\_read%' 查看索引使用率
 
-select  _from test where name in \(select name from test group by name having COUNT\(_\) &gt; 1\)  
+select _from test where name in \(select name from test group by name having COUNT\(_\) &gt; 1\)  
 select p1.id, p1.name from test as p1 inner join test as p2 on p1.name = p2.name where p1.id &lt;&gt; p2.id
 
-## 分布式
+### 分布式
 
 分布式锁：  
 redis加锁 jedis.set\(String key, String value, String nxxx, String expx, int time\) redis解锁 使用eval保证原子性
@@ -322,11 +319,10 @@ zookeeper分布式锁：
 执行业务代码；  
 完成业务流程后，删除对应的子节点释放锁。
 
-## 其他
+### 其他
 
 CAS单点登录：首先用户访问受保护的资源，权限没有认证，所以会把请求的URL以参数跳转到CAS认证中心，CAS认证中心发现没有SSO session，所以弹出登录页面，输入用户信息，提交到CAS认证中心进行信息的认证，如果信息正确，CAS认证中心就会创建一个SSO session——CASTGC cookie，这个CASTGC cookie包含了TGT，这个TGT作为一个用户session，它会分发一个ST返回给用户。用户拿到了ST后，访问带参数ST的资源地址，同时应用将ST发送给CAS认证中心，CAS认证中心对ST进行校验，判断ST是否是有效的，结果会返回一个包含成功信息的XML给应用。应用在建立相应的session cookie跳转到浏览器，用户在通过浏览器带cookie去应用访问受保护的资源地址，cookie验证成功便可以成功访问到信息。 第二次访问应用时，浏览器就会携带相应的session去验证用户是否登录，与一般单系统应用登录模式一样。 当我们访问其他的应用，与前面的步骤也是基本相同，首先用户访问受保护的资源，跳转回浏览器，浏览器含有先前登录的CASTGC cookie，CASTGC cookie包含了TGT并发送到CAS认证中心，CAS认证中心校验TGT是否有效，如果有效分发浏览器一个带ST参数的资源地址URL，应用活动ST后，再发送给CAS认证中心，如果认证了ST有效后，结果会返回一个包含成功信息的XML给应用。同样的步骤，应用在建立相应的session cookie跳转到浏览器，用户在通过浏览器带cookie去应用访问受保护的资源地址，验证成功便可以成功访问到信息。
 
-  
 \(1\)、TGC（ticket-granting cookie） 授权的票据证明，由 CAS Server 通过 SSL 方式发送给终端用户，存放用户身份认证凭证的Cookie，在浏览器和CAS Server间通讯时使用，并且只能基于安全通道传输（Https），是CAS Server用来明确用户身份的凭证。  
 \(2\)、TGT（Ticket Grangting Ticket） TGT是CAS为用户签发的登录票据，拥有了TGT，用户就可以证明自己在CAS成功登录过。TGT封装了Cookie值以及此Cookie值对应的用户信息。用户在CAS认证成功后，CAS生成Cookie（叫TGC），写入浏览器，同时生成一个TGT对象，放入自己的缓存，TGT对象的ID就是Cookie的值。当HTTP再次请求到来时，如果传过来的有CAS生成的Cookie，则CAS以此Cookie值为key查询缓存中有无TGT ，如果有的话，则说明用户之前登录过，如果没有，则用户需要重新登录。  
 \(3\)、ST（Service Ticket） ST是CAS为用户签发的访问某一service的票据。用户访问service时，service发现用户没有ST，则要求用户去CAS获取ST。用户向CAS发出获取ST的请求，如果用户的请求中包含Cookie，则CAS会以此Cookie值为key查询缓存中有无TGT，如果存在TGT，则用此TGT签发一个ST，返回给用户。用户凭借ST去访问service，service拿ST去CAS验证，验证通过后，允许用户访问资源。
