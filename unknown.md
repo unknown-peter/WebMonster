@@ -199,6 +199,10 @@ IoC容器找到bean定义并实例化bean
 如果有和bean关联的BeanPostProcessors对象，则这些对象的postProcessAfterInitialization方法被调用  
 销毁bean实例时，如果bean实现了DisposableBean接口，则调用其destroy方法
 
+JDK动态代理和CGLIB字节码生成的区别？
+JDK动态代理只能对实现了接口的类生成代理，而不能针对类；CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法
+如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP；如果目标对象实现了接口，可以强制使用CGLIB实现AOP；如果目标对象没有实现了接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换
+
 spring事务的传播属性，这些属性在TransactionDefinition中定义，具体常量的解释见下表：
 
 | 常量名称 | 常量解释 |
