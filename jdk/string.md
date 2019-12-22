@@ -14,5 +14,3 @@ String类被final修饰，不能被继承。内部使用final修饰的char数组
 
 ## 常用方法
 
-
-

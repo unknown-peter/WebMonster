@@ -1,6 +1,6 @@
 # unknown
 
-### 代码
+## 代码
 
 单例模式
 
@@ -134,6 +134,163 @@ public static void sort(int[] array, int lo, int hi) {
 }
 ```
 
+堆排序
+
+```text
+public class Sort {
+    public static void main(String[] args) {
+        int[] nums = {16,7,3,20,17,8};
+        headSort(nums);
+        for (int num : nums) {
+            System.out.print(num + " ");
+        }
+    }
+
+    /**
+     * 堆排序
+     */
+    public static void headSort(int[] list) {
+        //构造初始堆,从第一个非叶子节点开始调整,左右孩子节点中较大的交换到父节点中
+        for (int i = (list.length) / 2 - 1; i >= 0; i--) {
+            headAdjust(list, list.length, i);
+        }
+        //排序，将最大的节点放在堆尾，然后从根节点重新调整
+        for (int i = list.length - 1; i >= 1; i--) {
+            int temp = list[0];
+            list[0] = list[i];
+            list[i] = temp;
+            headAdjust(list, i, 0);
+        }
+    }
+    
+    private static void headAdjust(int[] list, int len, int i) {
+        int k = i, temp = list[i], index = 2 * k + 1;
+        while (index < len) {
+            if (index + 1 < len) {
+                if (list[index] < list[index + 1]) {
+                    index = index + 1;
+                }
+            }
+            if (list[index] > temp) {
+                list[k] = list[index];
+                k = index;
+                index = 2 * k + 1;
+            } else {
+                break;
+            }
+        }
+        list[k] = temp;
+    }
+}
+```
+
+归并排序
+
+```text
+public void merge(int []a,int left,int mid,int right){ 
+    int []tmp=new int[a.length];//辅助数组 
+    int p1=left,p2=mid+1,k=left;//p1、p2是检测指针，k是存放指针
+    while(p1<=mid && p2<=right){
+        if(a[p1]<=a[p2])
+            tmp[k++]=a[p1++];
+        else
+            tmp[k++]=a[p2++];
+    }
+
+    while(p1<=mid) tmp[k++]=a[p1++];//如果第一个序列未检测完，直接将后面所有元素加到合并的序列中
+    while(p2<=right) tmp[k++]=a[p2++];//同上
+
+    //复制回原素组
+    for (int i = left; i <=right; i++) 
+        a[i]=tmp[i];
+}
+
+public void mergeSort(int [] a,int start,int end){
+    if(start<end){//当子序列中只有一个元素时结束递归
+        int mid=(start+end)/2;//划分子序列
+        mergeSort(a, start, mid);//对左侧子序列进行递归排序
+        mergeSort(a, mid+1, end);//对右侧子序列进行递归排序
+        merge(a, start, mid, end);//合并
+    }
+}
+```
+
+二叉树前中后序遍历
+
+```text
+    public void preOrderTraverse1(TreeNode root) {
+        if (root != null) {
+            System.out.print(root.val + "->");
+            preOrderTraverse1(root.left);
+            preOrderTraverse1(root.right);
+        }
+    }
+    public void preOrderTraverse2(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode node = root;
+        while (node != null || !stack.empty()) {
+            if (node != null) {
+                System.out.print(node.val + "->");
+                stack.push(node);
+                node = node.left;
+            } else {
+                TreeNode tem = stack.pop();
+                node = tem.right;
+            }
+        }
+    }
+    
+    public void inOrderTraverse(TreeNode root) {
+        if (root != null) {
+            inOrderTraverse(root.left);
+            System.out.print(root.val + "->");
+            inOrderTraverse(root.right);
+        }
+    }
+    public void inOrderTraverse(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode node = root;
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
+            } else {
+                TreeNode tem = stack.pop();
+                System.out.print(tem.val + "->");
+                node = tem.right;
+            }
+        }
+    }
+    
+    public void postOrderTraverse(TreeNode root) {
+        if (root != null) {
+            postOrderTraverse(root.left);
+            postOrderTraverse(root.right);
+            System.out.print(root.val + "->");
+        }
+    }
+    public void postOrderTraverse(TreeNode root) {
+        TreeNode cur, pre = null;
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.empty()) {
+            cur = stack.peek();
+            if ((cur.left == null && cur.right == null) || (pre != null && (pre == cur.left || pre == cur.right))) {
+                System.out.print(cur.val + "->");
+                stack.pop();
+                pre = cur;
+            } else {
+                if (cur.right != null)
+                    stack.push(cur.right);
+                if (cur.left != null)
+                    stack.push(cur.left);
+            }
+        }
+    }
+```
+
 计算二叉树的高度
 
 ```java
@@ -155,7 +312,7 @@ public static void sort(int[] array, int lo, int hi) {
     }
 ```
 
-### java
+## java
 
 HashTable、HashMap、ConcurrentHashMap  
 HashMap实现了Map接口，实现了将唯一键隐射到特定值上。允许一个NULL键和多个NULL值。非线程安全。  
@@ -187,7 +344,7 @@ synchronized与Lock的区别
 5.synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）  
 6.Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题。
 
-### Spring
+## Spring
 
 bean生命周期：  
 IoC容器找到bean定义并实例化bean  
@@ -200,29 +357,12 @@ IoC容器找到bean定义并实例化bean
 销毁bean实例时，如果bean实现了DisposableBean接口，则调用其destroy方法
 
 JDK动态代理和CGLIB字节码生成的区别？  
-JDK动态代理只能对实现了接口的类生成代理，而不能针对类；CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法
-如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP；如果目标对象实现了接口，可以强制使用CGLIB实现AOP；如果目标对象没有实现了接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换
+JDK动态代理只能对实现了接口的类生成代理，而不能针对类；CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法 如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP；如果目标对象实现了接口，可以强制使用CGLIB实现AOP；如果目标对象没有实现了接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换
 
 AOP原理：  
 AOP技术利用一种称为"横切"的技术，剖解开封装的对象内部，并将那些影响了多个类的公共行为封装到一个可重用模块，并将其命名为"Aspect"，即切面。所谓"切面"，简单说就是那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块之间的耦合度，并有利于未来的可操作性和可维护性。  
 使用"横切"技术，AOP把软件系统分为两个部分：核心关注点和横切关注点。业务处理的主要流程是核心关注点，与之关系不大的部分是横切关注点。横切关注点的一个特点是，他们经常发生在核心关注点的多处，而各处基本相似，比如权限认证、日志、事物。AOP的作用在于分离系统中的各种关注点，将核心关注点和横切关注点分离开来。  
-1、横切关注点
-对哪些方法进行拦截，拦截后怎么处理，这些关注点称之为横切关注点
-2、切面（aspect）
-类是对物体特征的抽象，切面就是对横切关注点的抽象
-3、连接点（joinpoint）
-被拦截到的点，因为Spring只支持方法类型的连接点，所以在Spring中连接点指的就是被拦截到的方法，实际上连接点还可以是字段
-4、切入点（pointcut）
-我们关注的连接点就是切入点。
-5、通知（advice）
-所谓通知指的就是指拦截到连接点之后要执行的代码，通知分为前置、后置、异常、最终、环绕通知五类
-6、目标对象
-代理的目标对象
-7、织入（weave）
-将切面应用到目标对象并导致代理对象创建的过程
-8、引入（introduction）
-在不修改代码的前提下，引入可以在运行期为类动态地添加一些方法或字段
-
+1、横切关注点 对哪些方法进行拦截，拦截后怎么处理，这些关注点称之为横切关注点 2、切面（aspect） 类是对物体特征的抽象，切面就是对横切关注点的抽象 3、连接点（joinpoint） 被拦截到的点，因为Spring只支持方法类型的连接点，所以在Spring中连接点指的就是被拦截到的方法，实际上连接点还可以是字段 4、切入点（pointcut） 我们关注的连接点就是切入点。 5、通知（advice） 所谓通知指的就是指拦截到连接点之后要执行的代码，通知分为前置、后置、异常、最终、环绕通知五类 6、目标对象 代理的目标对象 7、织入（weave） 将切面应用到目标对象并导致代理对象创建的过程 8、引入（introduction） 在不修改代码的前提下，引入可以在运行期为类动态地添加一些方法或字段
 
 spring事务的传播属性，这些属性在TransactionDefinition中定义，具体常量的解释见下表：
 
@@ -249,7 +389,7 @@ ViewResolver解析后返回具体View
 DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）  
 DispatcherServlet响应用户。
 
-### jvm虚拟机
+## jvm虚拟机
 
 运行时数据区：方法区\(类定义、常量、静态变量\)、虚拟机栈、本地方法栈、堆、程序计数器
 
@@ -303,19 +443,19 @@ PermGen OOM
 2、jmap -F -dump:format=b,file=heapDump 1 \#1是进程号  
 3、jhat、VisualVM分析
 
-### redis
+## redis
 
 redis数据类型：String、list、hash、set、zset  
 redis持久化： RDB\(快照\)、AOF\(保存为AOF文件，append\)  
 主从复制 slave of
 
-### MyBatis
+## MyBatis
 
 MyBatis中使用\#和$占位符的区别：\#将传入的数据都当成一个字符串，会对传入的数据自动加上引号；$将传入的数据直接显示生成在SQL中\(有可能导致SQL注入攻击\)
 
 动态SQL：复杂查询指定多个查询条件 if、choose/when/otherwise、trim、where、set、foreach
 
-### mysql
+## mysql
 
 数据库特征：A\(原子性\)、C\(一致性\)、I\(隔离性\)、D\(持久性\)  
 数据库隔离级别：串行化、可重复读\(幻读\)、读已提交、读未提交\(脏读\)
@@ -335,7 +475,7 @@ show status like 'Handler\_read%' 查看索引使用率
 select _from test where name in \(select name from test group by name having COUNT\(_\) &gt; 1\)  
 select p1.id, p1.name from test as p1 inner join test as p2 on p1.name = p2.name where p1.id &lt;&gt; p2.id
 
-### 分布式
+## 分布式
 
 分布式锁：  
 redis加锁 jedis.set\(String key, String value, String nxxx, String expx, int time\) redis解锁 使用eval保证原子性
@@ -356,14 +496,14 @@ zookeeper分布式锁：
 执行业务代码；  
 完成业务流程后，删除对应的子节点释放锁。
 
-### 网络
+## 网络
 
 tcp、udp区别  
 1.基于连接与无连接；  
 2.对系统资源的要求（TCP较多，UDP少）；  
 3.UDP程序结构较简单；  
 4.流模式与数据报模式 ；  
-****5.TCP保证数据正确性，UDP可能丢包，TCP保证数据顺序，UDP不保证。
+_\*\*_5.TCP保证数据正确性，UDP可能丢包，TCP保证数据顺序，UDP不保证。
 
 tcp三次握手  
 \(1\) 第一次握手：建立连接时，客户端A发送SYN包\(SYN=j\)到服务器B，并进入SYN\_SEND状态，等待服务器B确认。  
@@ -375,9 +515,9 @@ tcp四次挥手
 （3）服务器B关闭与客户端A的连接，发送一个FIN给客户端A\(报文段6\)。  
 （4）客户端A发回ACK报文确认，并将确认序号设置为收到序号加1\(报文段7\)。  
 为什么建立连接协议是三次握手，而关闭连接却是四次握手呢  
-这是因为服务端的LISTEN状态下的SOCKET当收到SYN报文的连接请求后，它可以把ACK和SYN\(ACK起应答作用，而SYN起同步作用\)放在一个报文里来发送。但关闭连接时，当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可能未必会马上会关闭SOCKET,也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的。 
+这是因为服务端的LISTEN状态下的SOCKET当收到SYN报文的连接请求后，它可以把ACK和SYN\(ACK起应答作用，而SYN起同步作用\)放在一个报文里来发送。但关闭连接时，当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可能未必会马上会关闭SOCKET,也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的。
 
-### 其他
+## 其他
 
 CAS单点登录：首先用户访问受保护的资源，权限没有认证，所以会把请求的URL以参数跳转到CAS认证中心，CAS认证中心发现没有SSO session，所以弹出登录页面，输入用户信息，提交到CAS认证中心进行信息的认证，如果信息正确，CAS认证中心就会创建一个SSO session——CASTGC cookie，这个CASTGC cookie包含了TGT，这个TGT作为一个用户session，它会分发一个ST返回给用户。用户拿到了ST后，访问带参数ST的资源地址，同时应用将ST发送给CAS认证中心，CAS认证中心对ST进行校验，判断ST是否是有效的，结果会返回一个包含成功信息的XML给应用。应用在建立相应的session cookie跳转到浏览器，用户在通过浏览器带cookie去应用访问受保护的资源地址，cookie验证成功便可以成功访问到信息。 第二次访问应用时，浏览器就会携带相应的session去验证用户是否登录，与一般单系统应用登录模式一样。 当我们访问其他的应用，与前面的步骤也是基本相同，首先用户访问受保护的资源，跳转回浏览器，浏览器含有先前登录的CASTGC cookie，CASTGC cookie包含了TGT并发送到CAS认证中心，CAS认证中心校验TGT是否有效，如果有效分发浏览器一个带ST参数的资源地址URL，应用活动ST后，再发送给CAS认证中心，如果认证了ST有效后，结果会返回一个包含成功信息的XML给应用。同样的步骤，应用在建立相应的session cookie跳转到浏览器，用户在通过浏览器带cookie去应用访问受保护的资源地址，验证成功便可以成功访问到信息。
 
