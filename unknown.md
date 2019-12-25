@@ -344,6 +344,18 @@ synchronized与Lock的区别
 5.synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）  
 6.Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题。
 
+
+
+线程池
+
+* corePoolSize：线程池的核心大小，也可以理解为最小的线程池大小。
+* maximumPoolSize：最大线程池大小。
+* keepAliveTime：空余线程存活时间，指的是超过corePoolSize的空余线程达到多长时间才进行销毁。
+* unit：销毁时间单位。
+* workQueue：存储等待执行线程的工作队列。
+* threadFactory：创建线程的工厂，一般用默认即可。
+* handler：拒绝策略，当工作队列、线程池全已满时如何拒绝新任务，默认抛出异常。
+
 ## Spring
 
 bean生命周期：  
@@ -388,6 +400,12 @@ DispatcherServlet将ModelAndView传给ViewResolver视图解析器
 ViewResolver解析后返回具体View  
 DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）  
 DispatcherServlet响应用户。
+
+## Spring boot
+
+SpringBoot自动配置  
+@EnableAutoConfiguration注解能够开启Spring ApplicationContext 的自动配置功能，通过扫描类路径下的组件并注册符合条件的bean。  
+通过使用@Conditional，你可以根据任何条件选择性地注册bean。
 
 ## jvm虚拟机
 
