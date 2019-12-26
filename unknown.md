@@ -356,6 +356,10 @@ synchronized与Lock的区别
 * threadFactory：创建线程的工厂，一般用默认即可。
 * handler：拒绝策略，当工作队列、线程池全已满时如何拒绝新任务，默认抛出异常。
 
+1、如果线程池中的线程小于corePoolSize时就会创建新线程直接执行任务。  
+2、如果线程池中的线程大于corePoolSize时就会暂时把任务存储到工作队列workQueue中等待执行。  
+3、如果工作队列workQueue也满时：当线程数小于最大线程池数maximumPoolSize时就会创建新线程来处理，而线程数大于等于最大线程池数maximumPoolSize时就会执行拒绝策略。
+
 ## Spring
 
 bean生命周期：  
