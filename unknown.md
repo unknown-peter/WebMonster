@@ -551,3 +551,5 @@ CAS单点登录：首先用户访问受保护的资源，权限没有认证，�
 1、生成支付订单\(insert into ... on duplicate update ...\)  
 2、订单状态complete，生成交易明细
 
+
+
