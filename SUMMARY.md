@@ -19,4 +19,5 @@
   * [Maven](maven/maven.md)
 * [Linux](linux/README.md)
   * [Centos](linux/centos.md)
-
+* [其他](qi-ta/README.md)
+  * [一致性hash](qi-ta/yi-zhi-xing-hash.md)
