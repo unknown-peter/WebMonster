@@ -21,5 +21,6 @@
 * [Linux](linux/README.md)
   * [Centos](linux/centos.md)
 * [其他](其他/README.md)
+  * [algorithm](其他/algorithm.md)
   * [一致性hash](其他/一致性hash.md)
   * [scientia](其他/scientia.md)
